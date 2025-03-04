@@ -3,6 +3,7 @@ import 'react-native-reanimated';
 import { Text, View } from 'react-native';
 import { useState } from 'react';
 import OnBoarding from './(routes)/onboarding';
+import { Stack } from 'expo-router';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -14,7 +15,12 @@ export default function RootLayout() {
       {isLoggedIn ? (
         <View></View>
       ): (
-        <OnBoarding />
+        <Stack screenOptions={{headerShown:false}}>
+          <Stack.Screen name='index' />
+          <Stack.Screen name='(routes)/welcome-intro/index' />
+          <Stack.Screen name='(routes)/login/index' />
+          <Stack.Screen name='(routes)/sign-up/index' />
+        </Stack>
       )}
     </>
   );

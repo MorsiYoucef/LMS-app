@@ -4,12 +4,7 @@ import { Dimensions } from 'react-native';
 import { responsiveHeight,responsiveWidth } from 'react-native-responsive-dimensions';
 
 const { width, height } = Dimensions.get('window');
-console.log("Screen Width:", width);
-console.log("Screen Height:", height);
-// import {
-//     responsiveHeight,
-//     responsiveWidth,
-//   } from "react-native-responsive-dimensions";
+
 
 export const styles = StyleSheet.create({
 

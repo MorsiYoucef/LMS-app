@@ -32,6 +32,7 @@ import { useState } from "react";
 import { commonStyles } from "@/styles/common/common.styles";
 import { router } from "expo-router";
 
+
 export default function SignupScreen() {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
     const [buttonSpinner, setButtonSpinner] = useState(false);
@@ -92,7 +93,7 @@ export default function SignupScreen() {
     };
 
     const handleSignIn = async () => {
-        console.log(userInfo)
+        router.push('/(routes)/verifyAccount')
      }
     return (
         <LinearGradient

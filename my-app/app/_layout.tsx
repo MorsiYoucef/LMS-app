@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { useState } from 'react';
 import OnBoarding from './(routes)/onboarding';
 import { Stack } from 'expo-router';
+import {ToastProvider} from 'react-native-toast-notifications'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -11,7 +12,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [isLoggedIn, setisLoggedIn] = useState(false)
   return (
-    <>
+    <ToastProvider>
       {isLoggedIn ? (
         <View></View>
       ): (
@@ -21,8 +22,9 @@ export default function RootLayout() {
           <Stack.Screen name='(routes)/login/index' />
           <Stack.Screen name='(routes)/sign-up/index' />
           <Stack.Screen name='(routes)/verifyAccount/index' />
+          <Stack.Screen name='(routes)/forgot-password/index' />
         </Stack>
       )}
-    </>
+    </ToastProvider>
   );
 }

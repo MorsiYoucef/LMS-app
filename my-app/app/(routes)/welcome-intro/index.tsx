@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import WelcomeIntroScreen from '@/screens/WelcomeIntroScreen'
+import WelcomeIntroScreen from '@/screens/auth/WelcomeIntroScreen'
 
 export default function WelcomeIntro() {
   return (

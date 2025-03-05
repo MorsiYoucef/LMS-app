@@ -30,7 +30,11 @@ import {
 } from "@expo-google-fonts/nunito";
 import { useState } from "react";
 import { commonStyles } from "@/styles/common/common.styles";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from "expo-router";
+import axios from 'axios'
+import { SERVER_URI } from "@/utils/uri";
+import { Toast } from "react-native-toast-notifications";
 
 
 export default function SignupScreen() {
@@ -93,7 +97,26 @@ export default function SignupScreen() {
     };
 
     const handleSignIn = async () => {
-        router.push('/(routes)/verifyAccount')
+        await axios.post(`${SERVER_URI}/registration`,{
+            name: userInfo.name,
+            email: userInfo.email,
+            password: userInfo.password
+        }).then(async (res) =>{
+            await AsyncStorage.setItem('activation_token',res.data.activationToken)
+            Toast.show(res.data.message,{
+                type: "success",
+            });
+            setUserInfo({
+                name: "",
+                email: "",
+                password: "",
+            });
+            router.push('/(routes)/verifyAccount')
+        }).catch((err) => {
+            Toast.show("Email already exists",{
+                type: "danger",
+            })
+        })
      }
     return (
         <LinearGradient

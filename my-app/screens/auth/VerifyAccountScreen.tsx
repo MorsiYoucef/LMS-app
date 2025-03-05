@@ -15,6 +15,10 @@ import {
     Nunito_700Bold,
     Nunito_600SemiBold,
 } from "@expo-google-fonts/nunito";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { SERVER_URI } from "@/utils/uri";
+import { Toast } from "react-native-toast-notifications";
 //   import AsyncStorage from "@react-native-async-storage/async-storage";
 //   import axios from "axios";
 //   import { SERVER_URI } from "@/utils/uri";
@@ -49,8 +53,23 @@ export default function VerifyAccountScreen() {
             inputs.current[index - 1].current.focus();
         }
     };
-    const handleSumbit = () => {
-        console.log(code)
+    const handleSumbit = async () => {
+        const otp = code.join("");
+        const activation_token = await AsyncStorage.getItem('activation_token')
+        await axios.post(`${SERVER_URI}/activate-user`,{
+            activation_token,
+            activation_code: otp
+        }).then((res) => {
+            Toast.show("Your account was successfully activated",{
+                type: "success",
+            })
+            setCode(new Array(4).fill(""));
+            router.push('/(routes)/login')
+        }).catch((err) => {
+            Toast.show("Your OTP is not valide or expired",{
+                type: "danger",
+            })
+        })
     }
 
     return (

@@ -26,7 +26,7 @@ import { Toast } from "react-native-toast-notifications";
 
 export default function VerifyAccountScreen() {
     const [code, setCode] = useState(new Array(4).fill(""));
-
+    const [buttonSpinner, setButtonSpinner] = useState(false);
     const inputs = useRef<any>([...Array(4)].map(() => React.createRef()));
 
     let [fontsLoaded, fontError] = useFonts({
@@ -54,6 +54,7 @@ export default function VerifyAccountScreen() {
         }
     };
     const handleSumbit = async () => {
+        setButtonSpinner(true);
         const otp = code.join("");
         const activation_token = await AsyncStorage.getItem('activation_token')
         await axios.post(`${SERVER_URI}/activate-user`,{
@@ -64,8 +65,10 @@ export default function VerifyAccountScreen() {
                 type: "success",
             })
             setCode(new Array(4).fill(""));
+            setButtonSpinner(false);
             router.push('/(routes)/login')
         }).catch((err) => {
+            setButtonSpinner(false);
             Toast.show("Your OTP is not valide or expired",{
                 type: "danger",
             })
@@ -93,7 +96,7 @@ export default function VerifyAccountScreen() {
                 ))}
             </View>
             <View style={{ marginTop: 10 }}>
-                <Button title="Submit" onPress={handleSumbit} />
+                <Button title="Submit" onPress={handleSumbit} buttonSpinner={buttonSpinner} />
             </View>
             <View style={styles.loginLink}>
                 <Text style={[styles.backText, { fontFamily: "Nunito_700Bold" }]}>

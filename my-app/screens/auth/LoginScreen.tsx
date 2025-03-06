@@ -30,10 +30,10 @@ import {
 import { useState } from "react";
 import { commonStyles } from "@/styles/common/common.styles";
 import { router } from "expo-router";
-//   import axios from "axios";
-//   import { SERVER_URI } from "@/utils/uri";
-//   import { Toast } from "react-native-toast-notifications";
-//   import AsyncStorage from "@react-native-async-storage/async-storage";
+  import axios from "axios";
+  import { SERVER_URI } from "@/utils/uri";
+  import { Toast } from "react-native-toast-notifications";
+  import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginScreen() {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -93,8 +93,21 @@ export default function LoginScreen() {
         }
     };
 
-    const handleSignIn = () => {
-        console.log(userInfo)
+    const handleSignIn = async () => {
+        await axios.post(`${SERVER_URI}/login`,{
+            email: userInfo.email,
+            password: userInfo.password
+        }).then( async (response) => {
+            Toast.show("Logged in successfully")
+            router.push("/(tabs)/home");
+            await AsyncStorage.setItem("access_token",response.data.accessToken);
+            await AsyncStorage.setItem("refresh_token",response.data.refreshToken);
+        }).catch((error) => {
+            Toast.show("Invalid email or password",{
+                type: "danger"
+            })
+            
+        })
     }
 
 
